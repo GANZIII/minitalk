@@ -1,25 +1,38 @@
-NAME1 = server
-NAME2 = client
+NAME = minitalk.a
+
+SERVER = server
+CLIENT = client
+
+SRC_SERVER = server.c
+SRC_CLIENT = client.c
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
+AR = ar -rc
 
-all: $(NAME1) $(NAME2)
+OBJ_SERVER = ${SRC_SERVER:.c=.o}
+OBJ_CLIENT = ${SRC_CLIENT:.c=.o}
 
-$(NAME1): server.c
-	$(CC) $(CFLAGS) $^ -o $(NAME1)
+${NAME}: ${SERVER} ${CLIENT}
+	${AR} $@ $?
 
-$(NAME2): client.c
-	$(CC) $(CFLAGS) $^ -o $(NAME2)
+${SERVER}: ${OBJ_SERVER}
+	${CC} ${CFLAGS} ${OBJ_SERVER} -o ${SERVER}
+
+${CLIENT}: ${OBJ_CLIENT}
+	${CC} ${CFLAGS} ${OBJ_CLIENT} -o ${CLIENT}
+
+all: $(NAME)
 
 clean:
-	$(RM) client
-	$(RM) server
+	${RM} ${OBJ_CLIENT}
+	${RM} ${OBJ_SERVER}
 
 fclean: clean
-	$(RM) $(NAME1)
-	$(RM) $(NAME2)
+	${RM} ${SERVER}
+	${RM} ${CLIENT}
+	${RM} ${NAME}
 
 re: fclean all
 
